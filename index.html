@@ -37,7 +37,7 @@ const app=document.getElementById('app');let tick=null;
 let S={first:'',last:'',email:'',view:'home',p1:{ans:{},order:{},end:0,done:0},p2:{ans:{},order:{},end:0,done:0}};
 try{const s=JSON.parse(localStorage.getItem(KEY));if(s)S=s}catch(e){}
 const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}};
-const who=()=>(S.first+' '+S.last).replace(/[^\p{L}\p{M}0-9 .'-]/gu,'').trim();
+const who=()=>(S.first+' '+S.last).replace(/[^\p{L}\p{M}0-9 .-]/gu,'').trim();
 function fill(box,copy){box.querySelectorAll('pre').forEach(p=>{p.textContent=p.textContent.split('__NAME__').join(who());if(!copy)return;const b=el('button','btn copy','Copy');b.type='button';b.onclick=()=>{const t=p.textContent,ok=()=>{b.textContent='Copied';setTimeout(()=>b.textContent='Copy',1500)},bad=()=>{const r=document.createRange();r.selectNodeContents(p);const s=getSelection();s.removeAllRanges();s.addRange(r);b.textContent='Selected: press Ctrl + C'};navigator.clipboard?navigator.clipboard.writeText(t).then(ok,bad):bad()};p.after(b)})}
 function shuffle(q){const s=S[q.key];q.items.forEach((it,i)=>{if(it.type==='mc'&&!s.order[i]){const o=[0,1,2,3];for(let j=3;j>0;j--){const k=Math.floor(Math.random()*(j+1));[o[j],o[k]]=[o[k],o[j]]}s.order[i]=o}})}
 const answers=q=>{const s=S[q.key],a=[];let n=0;q.items.forEach((it,i)=>{if(it.type==='mc'){n++;a.push(n+(s.ans[i]===undefined?'-':L[s.ans[i]]))}});return a.join(' ')};
